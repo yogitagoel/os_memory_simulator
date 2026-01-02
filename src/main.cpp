@@ -1,6 +1,8 @@
 #include <iostream>
 #include "allocator/PhysicalMemory.h"
 #include <sstream>
+#include "cache/Cache.h"
+#include "cache/MultilevelCache.h"
 using namespace std;
 
 void printHelp(){
@@ -10,11 +12,16 @@ void printHelp(){
     cout<<" dump\n";
     cout<<" stats\n";
     cout<<" help\n";
+    cout<<" CacheAccess <address>\n";
+    cout<<" CacheStats\n";
     cout<<" exit \n";
 }
 
 int main(){
     PhysicalMemory pm(256);
+    Cache l1(4,4,1);
+    Cache l2(16,4,1);
+    MultilevelCache Mc(l1,l2);
     cout<<"Memory management Simulator\n";
     string line;
     while(true){
@@ -42,9 +49,8 @@ int main(){
             }
             if(add==-1) cout<<"Allocation failed\n";
             else
-                cout<<"Allocated "<< size<<" bytes at address"<<add<<"\n";
-        }
-        else if(cmd=="free"){
+                cout<<"Allocated "<< size<<" bytes at address "<<add<<"\n";
+        }else if(cmd=="free"){
             int add;
             ss>>add;
             if(ss.fail()){
@@ -53,22 +59,27 @@ int main(){
             }
             pm.freeMem(add);
             cout<<"Freed Memory at address "<<add<<'\n';
-        }
-        else if(cmd=="dump"){
+        }else if(cmd=="dump"){
             pm.dump();
-        }
-        else if(cmd=="stats"){
+        }else if(cmd=="stats"){
             pm.stats();
-        }
-        else if(cmd=="help"){
+        }else if(cmd=="CacheAccess"){
+            int addr;
+            ss>>addr;
+            if(ss.fail()){
+                cout<<"Usage: CacheAccess <address>\n";
+                continue;
+            }
+            Mc.access(addr);
+        }else if(cmd=="Cachestats"){
+            Mc.cacheStats();
+        }else if(cmd=="help"){
             printHelp();
-        }
-        else if(cmd=="exit"){
+        }else if(cmd=="exit"){
             cout<<"Exiting simulator.\n";
             break;
-        }
-        else{
-            cout<<"Unknkow command.Type 'help for commands.\n";
+        }else{
+            cout<<"Unknown command.Type 'help for commands.\n";
         }
     }
     return 0;

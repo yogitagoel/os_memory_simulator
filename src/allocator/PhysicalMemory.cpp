@@ -18,9 +18,11 @@ int PhysicalMemory::allocate(Block* cur,int reqSize){
     if(cur->size>reqSize){
         Block* newBlock=new Block{cur->start+reqSize,cur->size-reqSize,true,cur->next,cur};
         if(cur->next) cur->next->prev=newBlock;
+        cur->next=newBlock;
     }
     cur->size=reqSize;
     cur->free=false;
+    allocSuccess++;
     return st;
 }
 //First-fit memory allocation
@@ -147,7 +149,7 @@ void PhysicalMemory::stats(){
         cout<<"External Fragmentation: "<<extfrag<<"\n";
     }
     double util=(double)allocated/size;
-    cout<<"Memory Utilisation"<<util<<"\n";
+    cout<<"Memory Utilisation: "<<util<<"\n";
     cout<<"Allocation Success Rate: "<<success<<"\n";
     cout<<"Allocation Failure Rate: "<<fail<<"\n";
 }
