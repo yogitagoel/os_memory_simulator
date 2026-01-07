@@ -1,8 +1,8 @@
 #include <iostream>
-#include "allocator/PhysicalMemory.h"
+#include "../include/PhysicalMemory.h"
 #include <sstream>
-#include "cache/Cache.h"
-#include "cache/MultilevelCache.h"
+#include "../include/Cache.h"
+#include "../include/MultilevelCache.h"
 using namespace std;
 
 void printHelp(){
