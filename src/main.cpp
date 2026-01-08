@@ -15,10 +15,9 @@ void printHelp()
     cout << " stats\n";
     cout << " help\n";
     cout << " CacheAccess <address>\n";
-    cout << " CacheStats\n";
-    cout << " BuddyAlloc <size><\n";
+    cout << " Cachestats\n";
+    cout << " BuddyAlloc <size>\n";
     cout << " BuddyFree <address>\n";
-    cout << " CacheStats\n";
     cout << " exit \n";
 }
 
