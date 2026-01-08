@@ -12,7 +12,7 @@ This project is intended as an educational tool for understanding allocation str
 ## Project structure
 
 - include/
-  - PhysicalMemory.h — interfaces for contiguous memory allocator (linked list of blocks).
+  - PhysicalMemory.h — interfaces for contiguous memory allocator (doubly linked list of blocks).
   - Cache.h — single-level cache simulator.
   - MultilevelCache.h — wrapper for multi-level cache usage.
   - Buddy.h — buddy allocator interface.
@@ -68,7 +68,7 @@ Start the program (`./out`), then use the `mem>` prompt.
 
 - help
 
-  - Prints help (list of commands).
+  - Prints list of commands.
 
 - CacheAccess <address>
 
@@ -95,10 +95,5 @@ Start the program (`./out`), then use the `mem>` prompt.
 
 ## Extending
 
-- Add more allocation strategies (e.g., next-fit) or enhance fragmentation metrics.
+- Add more allocation strategies and enhance fragmentation metrics.
 - Improve CLI pointer parsing for the buddy allocator (e.g., assign a symbolic id to each buddy allocation and free by id).
-- Add unit tests, CI, and example scripts of workloads comparing allocation strategies.
-
-## License
-
-No license specified (add a LICENSE file to define terms).
