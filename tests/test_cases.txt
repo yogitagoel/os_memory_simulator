@@ -1,0 +1,97 @@
+# OS Memory Simulator Test Cases
+# Format: <test_type> <command>
+# This file contains all test cases for memory allocation, cache access, and virtual address operations
+
+# ===== MEMORY ALLOCATION WORKLOAD TESTS =====
+WORKLOAD malloc 32 first
+WORKLOAD malloc 64 best
+WORKLOAD malloc 128 worst
+WORKLOAD dump
+WORKLOAD stats
+WORKLOAD free 0
+WORKLOAD dump
+WORKLOAD stats
+WORKLOAD malloc 100 first
+WORKLOAD malloc 50 best
+WORKLOAD malloc 75 worst
+WORKLOAD free 100
+WORKLOAD malloc 30 first
+WORKLOAD dump
+WORKLOAD stats
+
+# ===== BUDDY ALLOCATOR TESTS =====
+WORKLOAD BuddyAlloc 32
+WORKLOAD BuddyAlloc 64
+WORKLOAD BuddyAlloc 128
+WORKLOAD BuddyFree 32
+WORKLOAD BuddyAlloc 64
+WORKLOAD BuddyAlloc 32
+WORKLOAD dump
+WORKLOAD stats
+
+# ===== CACHE ACCESS LOG TESTS =====
+CACHE CacheAccess 0
+CACHE CacheAccess 4
+CACHE CacheAccess 8
+CACHE CacheAccess 12
+CACHE CacheAccess 16
+CACHE CacheAccess 20
+CACHE CacheAccess 24
+CACHE CacheAccess 28
+CACHE CacheAccess 32
+CACHE CacheAccess 36
+CACHE Cachestats
+
+# Sequential access pattern - high spatial locality
+CACHE CacheAccess 0
+CACHE CacheAccess 16
+CACHE CacheAccess 32
+CACHE CacheAccess 48
+CACHE CacheAccess 64
+CACHE CacheAccess 80
+CACHE CacheAccess 96
+CACHE CacheAccess 112
+CACHE CacheAccess 128
+CACHE CacheAccess 144
+CACHE Cachestats
+
+# Loop pattern - high temporal locality
+CACHE CacheAccess 0
+CACHE CacheAccess 1
+CACHE CacheAccess 2
+CACHE CacheAccess 3
+CACHE CacheAccess 0
+CACHE CacheAccess 1
+CACHE CacheAccess 2
+CACHE CacheAccess 3
+CACHE Cachestats
+
+# ===== VIRTUAL ADDRESS ACCESS TESTS =====
+VIRTUAL malloc 64 first
+VIRTUAL malloc 128 best
+VIRTUAL dump
+VIRTUAL stats
+VIRTUAL free 0
+VIRTUAL dump
+VIRTUAL stats
+VIRTUAL malloc 256 worst
+VIRTUAL dump
+VIRTUAL stats
+VIRTUAL free 256
+VIRTUAL dump
+VIRTUAL stats
+
+# Mixed operations test
+VIRTUAL malloc 100 first
+VIRTUAL malloc 200 best
+VIRTUAL malloc 300 worst
+VIRTUAL dump
+VIRTUAL stats
+VIRTUAL free 100
+VIRTUAL malloc 150 first
+VIRTUAL dump
+VIRTUAL stats
+VIRTUAL free 0
+VIRTUAL free 300
+VIRTUAL dump
+VIRTUAL stats

@@ -13,11 +13,11 @@ void printHelp()
     cout << " free <address>\n";
     cout << " dump\n";
     cout << " stats\n";
-    cout << " help\n";
     cout << " CacheAccess <address>\n";
     cout << " Cachestats\n";
     cout << " BuddyAlloc <size>\n";
     cout << " BuddyFree <address>\n";
+    cout << " help\n";
     cout << " exit \n";
 }
 

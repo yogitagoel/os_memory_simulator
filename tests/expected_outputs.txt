@@ -1,0 +1,89 @@
+# OS Memory Simulator - Expected Test Outputs
+# This file contains expected outputs for test validation
+
+# Memory Allocation Tests
+WORKLOAD malloc 32 first:
+Expected: "Allocated 32 bytes at address"
+
+WORKLOAD malloc 64 best:
+Expected: "Allocated 64 bytes at address"
+
+WORKLOAD malloc 128 worst:
+Expected: "Allocated 128 bytes at address"
+
+WORKLOAD dump:
+Expected: Contains "FREE" or "USED"
+
+WORKLOAD stats:
+Expected: Contains "Statistics:" or "Free Memory:"
+
+WORKLOAD free 0:
+Expected: "Freed Memory at address 0"
+
+# Cache Access Tests
+CACHE CacheAccess 0:
+Expected: Contains "Cache Access" (hit or miss)
+
+CACHE CacheAccess 4:
+Expected: Contains "Cache Access" (hit or miss)
+
+CACHE CacheAccess 8:
+Expected: Contains "Cache Access" (hit or miss)
+
+CACHE Cachestats:
+Expected: Contains "Cache Statistics:" or "Hit Rate"
+
+# Buddy System Tests
+WORKLOAD BuddyAlloc 32:
+Expected: Contains "buddy allocated" or "Buddy allocation failed"
+
+WORKLOAD BuddyAlloc 64:
+Expected: Contains "buddy allocated" or "Buddy allocation failed"
+
+WORKLOAD BuddyFree 32:
+Expected: Contains "freed" or "Buddy freed"
+
+# Virtual Address Tests
+VIRTUAL malloc 64 first:
+Expected: "Allocated 64 bytes at address"
+
+VIRTUAL malloc 128 best:
+Expected: "Allocated 128 bytes at address"
+
+VIRTUAL dump:
+Expected: Contains "FREE" or "USED"
+
+VIRTUAL stats:
+Expected: Contains "Statistics:" or "Free Memory:"
+
+VIRTUAL free 0:
+Expected: "Freed Memory at address"
+
+# Mixed Operations
+WORKLOAD malloc 100 first:
+Expected: "Allocated 100 bytes at address"
+
+WORKLOAD malloc 50 best:
+Expected: "Allocated 50 bytes at address"
+
+WORKLOAD malloc 75 worst:
+Expected: "Allocated 75 bytes at address"
+
+WORKLOAD free 100:
+Expected: "Freed Memory at address"
+
+WORKLOAD malloc 30 first:
+Expected: "Allocated 30 bytes at address"
+
+# Complex Cache Patterns
+CACHE CacheAccess 0:
+Expected: Contains "Cache Access"
+
+CACHE CacheAccess 16:
+Expected: Contains "Cache Access"
+
+CACHE CacheAccess 32:
+Expected: Contains "Cache Access"
+
+CACHE Cachestats:
+Expected: Contains "Cache Statistics:"

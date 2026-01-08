@@ -21,6 +21,12 @@ This project is intended as an educational tool for understanding allocation str
   - buddyAllocator/ — buddy allocator implementation.
   - cache/ — cache implementation.
   - main.cpp — interactive command-line program.
+- tests/
+  - test_cases.txt — Combined test cases for all operations (workload, cache, virtual)
+  - expected_outputs.txt — Expected outputs for all test cases.
+  - test_runner.cpp — C++ automated test runner
+- docs/
+  - DESIGN_DOCUMENT.md — Comprehensive design and architecture documentation
 - Makefile — simple targets for running and cleaning.
 
 ## Requirements
@@ -30,18 +36,56 @@ This project is intended as an educational tool for understanding allocation str
 
 ## Build & run
 
-From the repository root:
+### Windows (PowerShell)
 
-- Quick (Makefile):
+#### Build the Simulator
 
-  - make run
-    - This compiles and runs the simulator.
-  - make clean
-    - Removes the compiled binary (`out`).
+```powershell
+g++ -std=c++17 -Iinclude src/main.cpp src/allocator/PhysicalMemory.cpp src/buddyAllocator/Buddy.cpp src/cache/Cache.cpp src/cache/Multilevel.cpp -o out
+```
 
-- Manual compile:
-  - g++ -std=c++17 -Iinclude src/\*_/_.cpp src/\*.cpp -o out
-  - ./out
+#### Run Simulator Manually
+
+```powershell
+.\out
+```
+
+#### Build Test Runner
+
+```powershell
+g++ -std=c++17 -Iinclude tests/test_runner.cpp src/allocator/PhysicalMemory.cpp src/buddyAllocator/Buddy.cpp src/cache/Cache.cpp src/cache/Multilevel.cpp -o test_runner
+```
+
+#### Run Automated Tests
+
+```powershell
+.\test_runner
+```
+
+### Linux/Ubuntu
+
+#### Quick (Makefile):
+
+```bash
+make run     # This compiles and runs the simulator
+make clean   # Removes the compiled binary (out)
+```
+
+#### Manual compile:
+
+```bash
+g++ -std=c++17 -Iinclude src/*/*/*.cpp src/*/*.cpp -o out
+./out
+```
+
+#### Build Test Runner:
+
+```bash
+g++ -std=c++17 -Iinclude tests/test_runner.cpp src/allocator/PhysicalMemory.cpp src/buddyAllocator/Buddy.cpp src/cache/Cache.cpp src/cache/Multilevel.cpp -o test_runner
+
+# Run all tests
+./test_runner
+```
 
 ## Interactive CLI — available commands
 
@@ -93,7 +137,20 @@ Start the program (`./out`), then use the `mem>` prompt.
 - exit
   - Exit the simulator.
 
+## Testing
+
+This project includes a comprehensive test suite to validate memory allocation, cache behavior, and virtual address translation.
+
+## Documentation
+
+For comprehensive technical details, see:
+
+- **Design Document** (`docs/DESIGN_DOCUMENT.md`) - Complete architecture, algorithms, and implementation details
+
 ## Extending
 
 - Add more allocation strategies and enhance fragmentation metrics.
 - Improve CLI pointer parsing for the buddy allocator (e.g., assign a symbolic id to each buddy allocation and free by id).
+- Add more cache replacement policies (LRU, Random, etc.).
+- Implement page-based virtual memory management.
+- Add memory protection and access control mechanisms.
