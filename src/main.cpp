@@ -3,83 +3,144 @@
 #include <sstream>
 #include "../include/Cache.h"
 #include "../include/MultilevelCache.h"
+#include "../include/Buddy.h"
 using namespace std;
 
-void printHelp(){
-    cout<<"\nAvailable commands:\n";
-    cout<<" malloc <size> <first|best|worst>\n";
-    cout<<" free <address>\n";
-    cout<<" dump\n";
-    cout<<" stats\n";
-    cout<<" help\n";
-    cout<<" CacheAccess <address>\n";
-    cout<<" CacheStats\n";
-    cout<<" exit \n";
+void printHelp()
+{
+    cout << "\nAvailable commands:\n";
+    cout << " malloc <size> <first|best|worst>\n";
+    cout << " free <address>\n";
+    cout << " dump\n";
+    cout << " stats\n";
+    cout << " help\n";
+    cout << " CacheAccess <address>\n";
+    cout << " CacheStats\n";
+    cout << " BuddyAlloc <size><\n";
+    cout << " BuddyFree <address>\n";
+    cout << " CacheStats\n";
+    cout << " exit \n";
 }
 
-int main(){
+int main()
+{
     PhysicalMemory pm(256);
-    Cache l1(4,4,1);
-    Cache l2(16,4,1);
-    MultilevelCache Mc(l1,l2);
-    cout<<"Memory management Simulator\n";
+    Cache l1(4, 4, 1);
+    Cache l2(16, 4, 1);
+    MultilevelCache Mc(l1, l2);
+    Buddy ba(512);
+    cout << "Memory management Simulator\n";
     string line;
-    while(true){
-        cout<<"mem> ";
-        getline(cin,line);
-        if(line.empty()) continue;
+    while (true)
+    {
+        cout << "mem> ";
+        getline(cin, line);
+        if (line.empty())
+            continue;
         stringstream ss(line);
         string cmd;
-        ss>>cmd;
-        if(cmd=="malloc"){
+        ss >> cmd;
+        if (cmd == "malloc")
+        {
             int size;
             string strat;
-            ss>>size>>strat;
-            if(ss.fail()){
-                cout<<"Usage: malloc <size> <first|best|worst>\n";
+            ss >> size >> strat;
+            if (ss.fail())
+            {
+                cout << "Usage: malloc <size> <first|best|worst>\n";
                 continue;
             }
-            int add=-1;
-            if(strat=="first") add=pm.allocateFirstFit(size);
-            else if(strat=="best") add=pm.allocateBestFit(size);
-            else if(strat=="worst") add=pm.allocateWorstFit(size);
-            else{
-                cout<<"Unknown strategy\n";
-                continue;
-            }
-            if(add==-1) cout<<"Allocation failed\n";
+            int add = -1;
+            if (strat == "first")
+                add = pm.allocateFirstFit(size);
+            else if (strat == "best")
+                add = pm.allocateBestFit(size);
+            else if (strat == "worst")
+                add = pm.allocateWorstFit(size);
             else
-                cout<<"Allocated "<< size<<" bytes at address "<<add<<"\n";
-        }else if(cmd=="free"){
+            {
+                cout << "Unknown strategy\n";
+                continue;
+            }
+            if (add == -1)
+                cout << "Allocation failed\n";
+            else
+                cout << "Allocated " << size << " bytes at address " << add << "\n";
+        }
+        else if (cmd == "free")
+        {
             int add;
-            ss>>add;
-            if(ss.fail()){
-                cout<<"Usage: free <address>\n";
+            ss >> add;
+            if (ss.fail())
+            {
+                cout << "Usage: free <address>\n";
                 continue;
             }
             pm.freeMem(add);
-            cout<<"Freed Memory at address "<<add<<'\n';
-        }else if(cmd=="dump"){
+            cout << "Freed Memory at address " << add << '\n';
+        }
+        else if (cmd == "dump")
+        {
             pm.dump();
-        }else if(cmd=="stats"){
+        }
+        else if (cmd == "stats")
+        {
             pm.stats();
-        }else if(cmd=="CacheAccess"){
+        }
+        else if (cmd == "CacheAccess")
+        {
             int addr;
-            ss>>addr;
-            if(ss.fail()){
-                cout<<"Usage: CacheAccess <address>\n";
+            ss >> addr;
+            if (ss.fail())
+            {
+                cout << "Usage: CacheAccess <address>\n";
                 continue;
             }
             Mc.access(addr);
-        }else if(cmd=="Cachestats"){
+        }
+        else if (cmd == "Cachestats")
+        {
             Mc.cacheStats();
-        }else if(cmd=="help"){
+        }
+        else if (cmd == "BuddyAlloc")
+        {
+            int sz;
+            ss >> sz;
+            if (ss.fail())
+            {
+                cout << "Usage: BuddyAlloc <size>\n";
+                continue;
+            }
+            void *addr = ba.access(sz);
+            if (!addr)
+                cout << "Buddy allocation failed\n";
+            else
+                cout << "buddy allocated " << sz << " bytes at " << addr << '\n';
+        }
+        else if (cmd == "BuddyFree")
+        {
+            void *addr;
+            ss >> addr;
+            if (ss.fail())
+            {
+                cout << "Usage: BuddyFree<address>\n";
+                continue;
+            }
+            ba.free(addr);
+            cout << "Buddy block freed at " << addr << '\n';
+        }
+        else if (cmd == "help")
+        {
             printHelp();
-        }else if(cmd=="exit"){
-            cout<<"Exiting simulator.\n";
+        }
+        else if (cmd == "exit")
+        {
+            cout << "Exiting simulator.\n";
             break;
-        }else{
-            cout<<"Unknown command.Type 'help for commands.\n";
+        }
+        else
+        {
+            cout << "Unknown command.Type 'help for commands.\n";
         }
     }
     return 0;
